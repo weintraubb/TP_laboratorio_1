@@ -40,13 +40,24 @@ int controller_loadFromText(char *path, LinkedList *pArrayListEmployee) {
  *
  */
 int controller_loadFromBinary(char *path, LinkedList *pArrayListEmployee) {
-	if (path != NULL && pArrayListEmployee != NULL) {
-		FILE *f = fopen("path", "rb");
-		if (f != NULL) {
-			parser_EmployeeFromText(f, pArrayListEmployee);
+	FILE* pFile;
+		int todoOk = 0;
+		int check;
+
+		if (path != NULL && pArrayListEmployee != NULL) {
+			pFile = fopen(path, "rb");
+			if (pFile != NULL) {
+				ll_clear(pArrayListEmployee);
+				check = parser_EmployeeFromBinary(pFile, pArrayListEmployee);
+				if (check) {
+					todoOk = 1;
+				}
+			}
+
+			fclose(pFile);
 		}
-	}
-	return 1;
+
+		return todoOk;
 }
 int controller_findEmployee(LinkedList *pArrayListEmployee) {
 	int i;
